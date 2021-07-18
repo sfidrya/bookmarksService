@@ -1,5 +1,6 @@
 import { Container } from '@material-ui/core'
 //import { makeStyles } from '@material-ui/core/styles';
+import AddBookmark from './AddBookmark'
 import MakeList from './MakeList'
 
 
@@ -9,6 +10,7 @@ function App() {
       <header>
         My Bookmarks
       </header>
+      <AddBookmark />
       <MakeList 
         items={[
           {id: 1, name: "First bookmark", link: "www.google.com"}, 
