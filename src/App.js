@@ -1,24 +1,47 @@
-import { Container } from '@material-ui/core'
+import { Button, Container } from '@material-ui/core';
 //import { makeStyles } from '@material-ui/core/styles';
-import AddBookmark from './AddBookmark'
-import MakeList from './MakeList'
+import './App.css'; 
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import AddOrEditBookmarkPage from './AddBookmarkPage';
+import MakeList from './MakeList';
 
 
 function App() {
   return (
+    <Router>
     <Container>
       <header>
         My Bookmarks
       </header>
-      <AddBookmark />
-      <MakeList 
-        items={[
-          {id: 1, name: "First bookmark", link: "www.google.com"}, 
-          {id: 2, name: "Second bookmark", link: "https://"}, 
-          {id:3, name: 3, link: "www"}
-          ]} 
-        />
+      
+      <Switch>
+        <Route path="/addbookmark">
+          <AddOrEditBookmarkPage />
+        </Route>
+        <Route path="/editbookmark/:id">
+          <AddOrEditBookmarkPage />
+        </Route>
+
+        <Route path="/bookmarkslist">  
+        <>
+          <MakeList />
+          <Button variant="contained" color="primary">
+            <Link to="/addbookmark" className="addButton">Add bookmark</Link>
+          </Button>
+          </>
+        </Route>
+        <Route path="/">
+        <>
+          <MakeList />
+          <Button variant="contained" color="primary">
+            <Link to="/addbookmark" className="addButton">Add bookmark</Link>
+          </Button>
+          </>
+        </Route>
+      </Switch>
+
     </Container>
+    </Router>
   );
 }
 

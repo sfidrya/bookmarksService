@@ -1,28 +1,17 @@
-import  React from 'react'; 
-import { Button, IconButton, Link, List, ListItem, ListItemSecondaryAction,  ListItemText } from '@material-ui/core'; 
+import  React, { useState } from 'react'; 
+import { IconButton, Link, List, ListItem, ListItemSecondaryAction,  ListItemText } from '@material-ui/core'; 
 import  DeleteIcon  from '@material-ui/icons/Delete';
-//import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import { getBookmarks, deleteBookmark } from './bookmarks'
 
-function MakeListItem ({id, link, name, tags = ['no_tag']}) {
-  //console.log(tags); 
+function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   const tagsString = Array.prototype.join.call(tags, ', '); 
-  //console.log(tagsString); 
   const linkRegExp = /https?:\/\//; 
-  console.log(linkRegExp.test(link))
   if (!linkRegExp.test(link)) {
     link = String.prototype.concat.call('https://', link)
   }
-  console.log(link); 
-  const handleClick = (e) => {
-    console.log('pressed list item'); 
-    const target = e.target; 
-    console.log(target)
-};
-  const handleSecondaryClick = () => {console.log('нажали DELETE')};
-  const handleLink = () => {console.log('alternative link click')};
-  //const handleButtonClick = () => {console.log('Button clicked')}
+  
   return (
-    <ListItem  key={id} divider={true} onClick={handleClick}>
+    <ListItem  key={id} divider={true} onClick={(e) => {handleClick(e, id)}}>
       <ListItemText 
         primary = {name}
         secondary = {
@@ -32,7 +21,7 @@ function MakeListItem ({id, link, name, tags = ['no_tag']}) {
           </>
         }
       />
-      <ListItemSecondaryAction onClick={handleSecondaryClick}>
+      <ListItemSecondaryAction onClick={(e) => handleDelete(e, id)}>
         <IconButton>
           <DeleteIcon></DeleteIcon>
         </IconButton>
@@ -41,16 +30,37 @@ function MakeListItem ({id, link, name, tags = ['no_tag']}) {
   )
 }; 
 
-export default function MakeList(props){
-  const itemsArray = props.items; 
+export default function MakeList() {
+  const [itemsJSON, setItemsJSON] = useState(getBookmarks());
+  /*useEffect(
+    () => {*setItemsJSON(getBookmarks())}, 
+    []
+  ) */
+  return ( 
+    <MakeListInner itemsJSON={itemsJSON} updateListState={setItemsJSON}/>
+  )
+}
+
+function MakeListInner({itemsJSON, updateListState}) {
+  const itemsObj = JSON.parse(itemsJSON); 
+  const itemsArray = []; 
+  for (const [key, value] of Object.entries(itemsObj)) {
+    itemsArray.push(value); 
+  }
+  const handleClick = (e, id) => {
+    window.location.href = `/editbookmark/${id}`; 
+};
+  const handleDelete = (e, id) => {
+    deleteBookmark(id); 
+    updateListState(getBookmarks()); 
+  };
   const listItems = itemsArray.map(item => {
-    return MakeListItem(item)
+    return MakeListItem(item.id, item.name, item.link, item.tags,handleClick, handleDelete)
   })
   return (
     <List>
       {listItems}
     </List>
   )
-
 }
 
