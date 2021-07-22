@@ -1,6 +1,6 @@
 import { Button, TextField } from '@material-ui/core'
 import { useCallback, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { addBookmark, editBookmark, getBookmarkById } from './bookmarks'
 
 export default function AddOrEditBookmarkPage() {
@@ -58,6 +58,9 @@ export default function AddOrEditBookmarkPage() {
         fullWidth={true}
         onChange={handleChange}
       />
+      <Button variant="contained" color="primary" className="cancelButton">
+        <Link to="/bookmarkslist" className="linkButton">Cancel</Link>
+      </Button>
       <Button type="submit" color="primary" variant="contained">
         {edit ? "Save Bookmark" : "Add Bookmark"}
       </Button>

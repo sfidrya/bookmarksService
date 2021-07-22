@@ -26,7 +26,7 @@ function App() {
         <>
           <MakeList />
           <Button variant="contained" color="primary">
-            <Link to="/addbookmark" className="addButton">Add bookmark</Link>
+            <Link to="/addbookmark" className="linkButton">Add bookmark</Link>
           </Button>
           </>
         </Route>
@@ -34,7 +34,7 @@ function App() {
         <>
           <MakeList />
           <Button variant="contained" color="primary">
-            <Link to="/addbookmark" className="addButton">Add bookmark</Link>
+            <Link to="/addbookmark" className="linkButton">Add bookmark</Link>
           </Button>
           </>
         </Route>
