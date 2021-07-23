@@ -3,8 +3,7 @@ import { Button, Container } from '@material-ui/core';
 import './App.css'; 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import AddOrEditBookmarkPage from './AddBookmarkPage';
-import MakeList from './MakeList';
-
+import BookmarksList from './BookmarksList'
 
 function App() {
   return (
@@ -24,7 +23,7 @@ function App() {
 
         <Route path="/bookmarkslist">  
         <>
-          <MakeList />
+          <BookmarksList />
           <Button variant="contained" color="primary">
             <Link to="/addbookmark" className="linkButton">Add bookmark</Link>
           </Button>
@@ -32,7 +31,7 @@ function App() {
         </Route>
         <Route path="/">
         <>
-          <MakeList />
+          <BookmarksList />
           <Button variant="contained" color="primary">
             <Link to="/addbookmark" className="linkButton">Add bookmark</Link>
           </Button>

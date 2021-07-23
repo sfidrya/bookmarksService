@@ -1,7 +1,8 @@
 import  React, { useState } from 'react'; 
 import { IconButton, Link, List, ListItem, ListItemSecondaryAction,  ListItemText } from '@material-ui/core'; 
 import  DeleteIcon  from '@material-ui/icons/Delete';
-import { getBookmarks, deleteBookmark } from './bookmarks'
+import {getBookmarks, deleteBookmark } from './bookmarks'; 
+
 
 function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   const tagsString = Array.prototype.join.call(tags, ', '); 
@@ -30,19 +31,8 @@ function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   )
 }; 
 
-export default function MakeList() {
-  const [itemsJSON, setItemsJSON] = useState(getBookmarks());
-  /*useEffect(
-    () => {*setItemsJSON(getBookmarks())}, 
-    []
-  ) */
-  return ( 
-    <MakeListInner itemsJSON={itemsJSON} updateListState={setItemsJSON}/>
-  )
-}
-
-function MakeListInner({itemsJSON, updateListState}) {
-  const itemsObj = JSON.parse(itemsJSON); 
+export default function MakeList({itemsString, updateItems}) {
+  const itemsObj = JSON.parse(itemsString)
   const itemsArray = []; 
   for (const [key, value] of Object.entries(itemsObj)) {
     itemsArray.push(value); 
@@ -52,7 +42,7 @@ function MakeListInner({itemsJSON, updateListState}) {
 };
   const handleDelete = (e, id) => {
     deleteBookmark(id); 
-    updateListState(getBookmarks()); 
+    updateItems(); 
   };
   const listItems = itemsArray.map(item => {
     return MakeListItem(item.id, item.name, item.link, item.tags,handleClick, handleDelete)
