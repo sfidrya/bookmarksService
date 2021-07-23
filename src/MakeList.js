@@ -31,8 +31,7 @@ function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   )
 }; 
 
-export default function MakeList({itemsString, updateItems}) {
-  const itemsObj = JSON.parse(itemsString)
+export default function MakeList({itemsObj, updateList}) {
   const itemsArray = []; 
   for (const [key, value] of Object.entries(itemsObj)) {
     itemsArray.push(value); 
@@ -42,7 +41,7 @@ export default function MakeList({itemsString, updateItems}) {
 };
   const handleDelete = (e, id) => {
     deleteBookmark(id); 
-    updateItems(); 
+    updateList(); 
   };
   const listItems = itemsArray.map(item => {
     return MakeListItem(item.id, item.name, item.link, item.tags,handleClick, handleDelete)
