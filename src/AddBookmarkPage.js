@@ -58,7 +58,7 @@ export default function AddOrEditBookmarkPage() {
         fullWidth={true}
         onChange={handleChange}
       />
-      <Button variant="contained" color="primary" className="cancelButton">
+      <Button variant="contained" color="primary" >
         <Link to="/bookmarkslist" className="linkButton">Cancel</Link>
       </Button>
       <Button type="submit" color="primary" variant="contained">
