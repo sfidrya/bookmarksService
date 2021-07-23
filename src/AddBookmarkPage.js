@@ -16,7 +16,7 @@ export default function AddOrEditBookmarkPage() {
   const handleChange = useCallback((e) => {
     const value = e.target.value; 
     const name = e.target.name; 
-    setFormState({...formState, [name]: value})
+    setFormState(prevFormState => ({...prevFormState, [name]: value}))
   }, [formState]);
 
   const handleSubmit = (e) => {
