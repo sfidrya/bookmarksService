@@ -45,11 +45,13 @@ function getBookmarks() {
   if (!bookmarksJSON) {
     bookmarksJSON = '{}';
   }
-  return bookmarksJSON; 
+  const bookmarksArray = Object.values(JSON.parse(bookmarksJSON)); 
+  return bookmarksArray; 
 }
 
 function getBookmarkById(id) {
-  const bookmarks = JSON.parse(getBookmarks()); 
+  let bookmarksJSON = localStorage.getItem('bookmarks'); 
+  const bookmarks = JSON.parse(bookmarksJSON); 
   return bookmarks[id]; 
 }
 

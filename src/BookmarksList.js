@@ -5,14 +5,14 @@ import { getBookmarks } from './bookmarks';
 
 
 export default function BookmarksList() {
-  const itemsInitial = JSON.parse(getBookmarks()); 
-  const [items, setItems] = useState(itemsInitial); 
+  const itemsArray = getBookmarks();  
+  const [items, setItems] = useState(itemsArray); 
   /*useEffect(
     () => {*setItemsJSON(getBookmarks())}, 
     []
   ) */
   const updateItems = () => {
-    setItems(JSON.parse(getBookmarks()))
+    setItems(getBookmarks()); 
   }
 
   const handleSearch = (e)  => {
@@ -23,7 +23,7 @@ export default function BookmarksList() {
   return ( 
     <>
       <SearchBar handleSearchSubmit={handleSearch} />
-      <MakeList itemsObj={items} updateList={updateItems} />
+      <MakeList itemsArray={items} updateList={updateItems} />
     </>
   )
 }

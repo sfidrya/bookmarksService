@@ -1,7 +1,7 @@
 import  React, { useState } from 'react'; 
 import { IconButton, Link, List, ListItem, ListItemSecondaryAction,  ListItemText } from '@material-ui/core'; 
 import  DeleteIcon  from '@material-ui/icons/Delete';
-import {getBookmarks, deleteBookmark } from './bookmarks'; 
+import { deleteBookmark } from './bookmarks'; 
 
 
 function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
@@ -31,14 +31,10 @@ function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   )
 }; 
 
-export default function MakeList({itemsObj, updateList}) {
-  const itemsArray = []; 
-  for (const [key, value] of Object.entries(itemsObj)) {
-    itemsArray.push(value); 
-  }
+export default function MakeList({itemsArray, updateList}) {
   const handleClick = (e, id) => {
     window.location.href = `/editbookmark/${id}`; 
-};
+  };
   const handleDelete = (e, id) => {
     deleteBookmark(id); 
     updateList(); 
