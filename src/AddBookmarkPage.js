@@ -17,7 +17,7 @@ export default function AddOrEditBookmarkPage() {
     const value = e.target.value; 
     const name = e.target.name; 
     setFormState(prevFormState => ({...prevFormState, [name]: value}))
-  }, [formState]);
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
