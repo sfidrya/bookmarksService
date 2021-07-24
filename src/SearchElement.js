@@ -15,8 +15,15 @@ export default function SearchBar({handleSearchSubmit}) {
     setSelectedRadioOption(e.target.value); 
   }, [])
 
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault(); 
+    console.log('handle submit in search element'); 
+    console.log(selectedRadioOption, searchTextValue); 
+    handleSearchSubmit(selectedRadioOption, searchTextValue); 
+  }, [selectedRadioOption, searchTextValue, handleSearchSubmit])
+
   return(
-    <Box component="form" onSubmit={handleSearchSubmit}>
+    <Box component="form" onSubmit={handleSubmit}>
       <TextField
         variant="outlined"
         InputProps={{
