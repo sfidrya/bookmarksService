@@ -1,26 +1,23 @@
-import { useCallback, useState } from 'react'; 
+import { useCallback } from 'react'; 
 import { Box, FormLabel, FormControlLabel, InputAdornment, RadioGroup, Radio, TextField } from '@material-ui/core';
 //import { styles } from '@material-ui/core/styles'; 
 import SearchIcon from '@material-ui/icons/Search'; 
 
-export default function SearchBar({handleSearchSubmit}) {
-  const [selectedRadioOption, setSelectedRadioOption] = useState("name"); 
-  const [searchTextValue, setSearchTextValue] = useState(""); 
+export default function SearchBar({selectedRadioOption, searchTextValue, setSelectedRadioOption, handleSearchTextChange}) {
 
-  const handleSearchTextChange = useCallback((e) => {
-    setSearchTextValue(e.target.value); 
-  }, [])
+  const handleTextChange = useCallback((e) => {
+    handleSearchTextChange(e.target.value)
+  }, [handleSearchTextChange])
   
   const handleRadioChange  = useCallback((e) => {
-    setSelectedRadioOption(e.target.value); 
-  }, [])
+    const newValue = e.target.value; 
+    setSelectedRadioOption(newValue === "tag" ? "tags" : newValue); 
+  }, [setSelectedRadioOption])
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault(); 
-    console.log('handle submit in search element'); 
-    console.log(selectedRadioOption, searchTextValue); 
-    handleSearchSubmit(selectedRadioOption, searchTextValue); 
-  }, [selectedRadioOption, searchTextValue, handleSearchSubmit])
+    document.activeElement.blur(); 
+  }, [])
 
   return(
     <Box component="form" onSubmit={handleSubmit}>
@@ -38,7 +35,7 @@ export default function SearchBar({handleSearchSubmit}) {
         placeholder="Search"
         value={searchTextValue}
         fullWidth={true}
-        onChange={handleSearchTextChange}
+        onChange={handleTextChange}
       />
       <FormLabel component="legend">
         Search by
@@ -66,7 +63,7 @@ export default function SearchBar({handleSearchSubmit}) {
           value="tag" 
           control={<Radio />} 
           label="tag" 
-          checked={selectedRadioOption === "tag"}
+          checked={selectedRadioOption === "tags"}
           onChange={handleRadioChange}
         />
       </RadioGroup>

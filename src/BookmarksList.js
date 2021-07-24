@@ -12,10 +12,7 @@ export default function BookmarksList() {
   const [searchText, setSearchText] = useState(""); 
   
   function filterFunction(value) {
-    console.log('FILTER FUNCTION')
-    console.log(value); 
     let propertyToCheck = value[filterBy]; 
-    console.log(propertyToCheck); 
     let result = false; 
     if (filterBy === "tags") {
       for (let i = 0; i < propertyToCheck.length; i++) {
@@ -37,20 +34,31 @@ export default function BookmarksList() {
     setItems(getBookmarks()); 
   }
 
-  const handleSearch = (selectedSearchBy, searchTextValue)  => {
-      if (searchTextValue !== "") {
-      setFilter(true); 
-      setFilterBy(selectedSearchBy === "tag" ? "tags" : selectedSearchBy); 
-      setSearchText(searchTextValue.toLowerCase()); 
+  const handleSearchTextChange = (text) => {
+    setSearchText(text); 
+    if (text !== "") {
+      if (!filter) {
+        setFilter(true); 
+      }
+      
     } else {
-      setFilter(false); 
+      if(filter) {
+        setFilter(false); 
+      }
     }
   }
 
   return ( 
     <>
-      <SearchBar handleSearchSubmit={handleSearch} />
-      <MakeList itemsArray={filter ? Array.prototype.filter.call(items, filterFunction) : items} updateList={updateItems} />
+      <SearchBar 
+        selectedRadioOption={filterBy} 
+        searchTextValue={searchText} 
+        setSelectedRadioOption={setFilterBy} 
+        handleSearchTextChange={handleSearchTextChange}
+       />
+      <MakeList 
+        itemsArray={filter ? Array.prototype.filter.call(items, filterFunction) : items} 
+        updateList={updateItems} />
     </>
   )
 }
