@@ -1,32 +1,49 @@
 import { Button, TextField } from '@material-ui/core'
 import { useCallback, useState } from 'react'
 import { useParams, Link } from 'react-router-dom';
+import { ChangeEvent, FormEvent } from 'react-transition-group/node_modules/@types/react';
 import { addBookmark, editBookmark, getBookmarkById } from './bookmarks'
 
+interface AddOrEditBookmarkParams {
+  id: string
+}
+
 export default function AddOrEditBookmarkPage() {
-  let { id } = useParams();
+  let { id } = useParams<AddOrEditBookmarkParams>();
   const edit = Boolean(id); 
-  const bookmark = edit ? getBookmarkById(Number(id)) : null; 
+  const bookmark = edit ? getBookmarkById(id) : null; 
   const [formState, setFormState] = useState({
-    bookmarkName: edit ? bookmark.name : '', 
-    bookmarkUrl: edit ? bookmark.link : '', 
-    bookmarkTags: edit ? bookmark.tags.join(', ') : ''
+    bookmarkTitle: edit ? bookmark?.title : '', 
+    bookmarkUrl: edit ? bookmark?.link : '', 
+    bookmarkTags: edit ? bookmark?.tags?.join(', ') : ''
   }); 
 
-  const handleChange = useCallback((e) => {
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value; 
     const name = e.target.name; 
     setFormState(prevFormState => ({...prevFormState, [name]: value}))
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLElement>) => {
     e.preventDefault();
+    let bookmarkTitle: string = ''
+    if (formState.bookmarkTitle !== undefined) {
+      bookmarkTitle = formState.bookmarkTitle
+    }
+    let bookmarkUrl: string = ""
+    if (formState.bookmarkUrl !== undefined) {
+      bookmarkUrl = formState.bookmarkUrl
+    }
+    let bookmarkTags: string = ""
+    if (formState.bookmarkTags !== undefined) {
+      bookmarkTags = formState.bookmarkTags
+    }
     if (edit) {
       console.log('edit bookmark'); 
-      editBookmark(Number(id), formState.bookmarkName, formState.bookmarkUrl, formState.bookmarkTags); 
+      editBookmark(id, bookmarkTitle, bookmarkUrl, bookmarkTags); 
     } else {
       console.log('add bookmark');
-      addBookmark(formState.bookmarkName, formState.bookmarkUrl, formState.bookmarkTags); 
+      addBookmark(bookmarkTitle, bookmarkUrl, bookmarkTags); 
     }
       window.location.href = "/";
 
@@ -36,9 +53,9 @@ export default function AddOrEditBookmarkPage() {
     <form onSubmit={handleSubmit}>
       <br />
       <TextField
-        name="bookmarkName"
+        name="bookmarkTitle"
         label="Type bookmark name here"
-        value={formState.bookmarkName}
+        value={formState.bookmarkTitle}
         fullWidth={true}
         onChange={handleChange}
       />

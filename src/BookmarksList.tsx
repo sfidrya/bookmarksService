@@ -1,17 +1,20 @@
 import  React, { useState } from 'react'; 
 import SearchBar from './SearchElement'; 
 import MakeList from './MakeList';
-import { getBookmarks } from './bookmarks';
+import { Bookmark, getBookmarks } from './bookmarks';
 
 
 export default function BookmarksList() {
   const itemsArray = getBookmarks();  
   const [items, setItems] = useState(itemsArray); 
   const [filter, setFilter] = useState(false);
-  const [filterBy, setFilterBy] = useState("name");
+  const [filterBy, setFilterBy] = useState("title");
   const [searchText, setSearchText] = useState(""); 
   
-  function filterFunction(value) {
+  function filterFunction(value: Bookmark) {
+    if (filterBy !== "title" && filterBy !== "tags" && filterBy !== "link") {
+      return
+    }
     let propertyToCheck = value[filterBy]; 
     let result = false; 
     if (filterBy === "tags") {
@@ -22,6 +25,9 @@ export default function BookmarksList() {
         }
       }
     } else {
+      if (! (typeof propertyToCheck === "string")) {
+        return result
+      }
       result = propertyToCheck.toLowerCase().includes(searchText);
     }
     return result;  
@@ -34,7 +40,7 @@ export default function BookmarksList() {
     setItems(getBookmarks()); 
   }
 
-  const handleSearchTextChange = (text) => {
+  const handleSearchTextChange = (text: string) => {
     setSearchText(text); 
     if (text !== "") {
       if (!filter) {

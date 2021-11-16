@@ -1,10 +1,18 @@
 import  React from 'react'; 
 import { IconButton, Link, List, ListItem, ListItemSecondaryAction,  ListItemText } from '@material-ui/core'; 
 import  DeleteIcon  from '@material-ui/icons/Delete';
-import { deleteBookmark } from './bookmarks'; 
+import { Bookmark, deleteBookmark } from './bookmarks'; 
 
 
-function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
+
+
+function MakeListItem(
+    id: string, 
+    title: string | null, 
+    link: string, 
+    tags: string[] | null, 
+    handleClick: (e: React.MouseEvent, id: string) => void, 
+    handleDelete: (e: React.MouseEvent, id: string) => void) {
   const tagsString = Array.prototype.join.call(tags, ', '); 
   const linkRegExp = /https?:\/\//; 
   if (!linkRegExp.test(link)) {
@@ -14,7 +22,7 @@ function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
   return (
     <ListItem  key={id} divider={true} onClick={(e) => {handleClick(e, id)}}>
       <ListItemText 
-        primary = {name}
+        primary = {title}
         secondary = {
           <>
           <Link href={link} target= "_blank" rel="noopener noreferrer">{link}</Link><br/>
@@ -29,18 +37,24 @@ function MakeListItem (id, name, link, tags, handleClick, handleDelete) {
       </ListItemSecondaryAction>
     </ListItem>
   )
-}; 
+};
 
-export default function MakeList({itemsArray, updateList}) {
-  const handleClick = (e, id) => {
+interface MakeListProps {
+  itemsArray: Bookmark[], 
+  updateList: () => void 
+
+}
+
+export default function MakeList({itemsArray, updateList}: MakeListProps) {
+  const handleClick = (e: React.MouseEvent, id: string) => {
     window.location.href = `/editbookmark/${id}`; 
   };
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: React.MouseEvent, id: string) => {
     deleteBookmark(id); 
     updateList(); 
   };
   const listItems = itemsArray.map(item => {
-    return MakeListItem(item.id, item.name, item.link, item.tags,handleClick, handleDelete)
+    return MakeListItem(item.id, item.title, item.link, item.tags,handleClick, handleDelete)
   })
   return (
     <List>
